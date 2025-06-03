@@ -1,0 +1,37 @@
+#!/bin/bash
+# SBATCH --mail-user=oscariglesias@ub.edu
+# SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --job-name nanotubes
+# SBATCH -e nanotubes%a.err
+# SBATCH -o nanotubes%a.out
+
+# -> The next line is to generate an array of jobs that will read data from a set of 3 files Nanotubes_*.dat
+# where the star is replaced by numbers 100 to 300 in steps of 100 (numbers can be changed, this is only an example)
+# -> The values after -a are assigned to an internal variable called $SLURM_ARRAY_TASK_ID
+# that can only take interger positive values.
+# - > The line starting with sed will replace XX (value of K_ani in this example) by the value of 
+# VARIABLE. This can also be tuned as needed by changing the division by 1000 by other numbers.
+# In this example gdip values wil vary from 0.1 to 0.3 in steps of 0.1 in the diferent *.dat files.
+
+#SBATCH -a 200-300:100 
+#SBATCH -p std
+# cSBATCH --ntasks=1
+#SBATCH --time 20:00:00
+
+# This works: it will replace the value of gdip (XX) in the 10th line of the original file (XX) 
+# by the number specified by the $SLURM_ARRAY_TASK_ID !!
+#sed -r '10s/^XX/'$SLURM_ARRAY_TASK_ID'/' Nanotubes.dat > Nanotubes_$SLURM_ARRAY_TASK_ID.dat;
+
+# This works better: replaces non integer values based on $SLURM_ARRAY_TASK_ID
+VARIABLE=$(echo "scale=3; $SLURM_ARRAY_TASK_ID / 100" | bc) 
+JEXCH=0.0
+GDIP=1.0
+#sed -i '10s/^XX/'$GDIP'/' Nanotubes.dat > Nanotubes_$SLURM_ARRAY_TASK_ID.dat;
+sed -r "9s/^JJ/$JEXCH/" Nanotubes_K.dat> Nanotubes_K_$SLURM_ARRAY_TASK_ID.dat;
+sed -i "10s/^XX/$GDIP/" Nanotubes_K_$SLURM_ARRAY_TASK_ID.dat;
+sed -i '11s/^YY/'$VARIABLE'/' Nanotubes_K_$SLURM_ARRAY_TASK_ID.dat;
+
+ time ./Nanotubes_main Nanotubes_K_$SLURM_ARRAY_TASK_ID.dat & 
+ wait
+
+

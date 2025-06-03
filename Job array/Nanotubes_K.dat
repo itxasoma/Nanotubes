@@ -1,0 +1,24 @@
+Angle    ! Version: Zigzag, Angle
+SC             ! Lattice: SC (if Alpha = 90), General (if Alpha neq 90) (For Angle version only)
+8 29    ! Natoms , Layers (For Zigzag version only 8 15 in Sci Rep)
+90.0d0    ! Alpha: angle between basis vectors in degrees:  (=60 for Triang, =90 for Squared)
+4 4         ! Nanotube indices: n1, n2  (For alpha= 90: n1=n2, gives Zig-Zag (ZZ )tube//n1 or n2=0 gives columnar (AA) tube) (For alpha= 60: for all n1 and  n2=0 gives (AB) tube)
+40 40    ! Original lattice size: nx, ny
+15        ! Scaling factor for the nanotube length: Final_length (not used)
+7.4        ! Scaling factor for the nanotube length: Tlength 7.5
+JJ                        ! Valor de J_ex: J>0  FM, J<0 :AFM
+XX                        ! gdip: strength of dipolar interaction
+YY                        ! K_ani: anisotropy constant
+Radial                    ! V_ani: anisotropy axis (Uniaxial,Radial)
+20000    2000                    ! MCtot = Total # MC, preMC = Thermalization MC
+Annealing                ! Protocol: com avança la temperatura (Linear/Annealing)
+3.                        ! Initial temperature
+0.001                    ! Final temperature
+0.95                    ! dTemp: temperature step (for Linear), temperature factor (for Annealing)
+Cone                ! New Orientation in MonteCarlo (Random/Ising/Cone)
+0.3                        ! Rmax:  maximum aperture of the trial Cone (valor al voltant 0,1-0,3)
+Random                ! SpinOrientation  (Random/Alignedz/RandomIs/VortexZ/Normal)
+Not Not Not Not Not Not Not    ! Writeaux: Yes or Not (write initial  Geometry data files: PosGeo, Original, Rotated, Trimmed, Pos_ini, Config_ini, Nneigh)
+Pos                        ! File with atom positions: FilePos
+Config                    ! Basename for file with spins positions: FileSpin
+Nneigh                    ! File wtih next neighours aroms: FileNneigh
